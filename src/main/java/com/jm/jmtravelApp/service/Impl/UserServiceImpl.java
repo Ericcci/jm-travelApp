@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * UserServiceImpl
@@ -29,10 +30,25 @@ public class UserServiceImpl implements UserService {
         return userDao.findOne(uuid);
     }
 
+    @Override
+    public User findByUserName(String userName) {
+        return userDao.findByUserName(userName);
+    }
+
     @CacheEvict(value = "userInfo", key = "'findByUuid-' + #user.getUuid()")
     @Override
     public User save(User user) {
         return userDao.save(user);
+    }
+
+    @Override
+    public Set<String> getRoles(String userName) {
+        return null;
+    }
+
+    @Override
+    public Set<String> getPermissions(String userName) {
+        return null;
     }
 
     //@CacheEvict(value="propertyInfo",allEntries=true)  清空全部

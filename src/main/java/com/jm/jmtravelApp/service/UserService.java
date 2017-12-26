@@ -3,6 +3,8 @@ package com.jm.jmtravelApp.service;
 import com.jm.jmtravelApp.entity.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 /**
  * UserService
  *
@@ -11,5 +13,8 @@ import org.springframework.stereotype.Service;
  */
 public interface UserService {
     User findByUuid(String uuid);
+    User findByUserName(String userName);
     User save(User user);
+    Set<String> getRoles(String userName);
+    Set<String> getPermissions(String userName);
 }

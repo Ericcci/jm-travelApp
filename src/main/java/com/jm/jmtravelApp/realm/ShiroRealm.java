@@ -26,23 +26,21 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-//        String userName = (String) principals.getPrimaryPrincipal();
-//        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-//        authorizationInfo.setRoles(userService.getRoles(userName));
-//        authorizationInfo.setStringPermissions(userService.getPermissions(userName));
-//        return authorizationInfo;
-        return null;
+        String userName = (String) principals.getPrimaryPrincipal();
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        authorizationInfo.setRoles(userService.getRoles(userName));
+        authorizationInfo.setStringPermissions(userService.getPermissions(userName));
+        return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-//        String userName = (String) token.getPrincipal();
-//        User user = userService.getByUserName(userName);
-//        if (user != null) {
-//            return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), getName());
-//        } else {
-//            return null;
-//        }
-        return null;
+        String userName = (String) token.getPrincipal();
+        User user = userService.findByUserName(userName);
+        if (user != null) {
+            return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), getName());
+        } else {
+            return null;
+        }
     }
 }
