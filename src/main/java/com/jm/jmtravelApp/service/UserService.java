@@ -15,6 +15,7 @@ public interface UserService {
     User findByUuid(String uuid);
     User findByUserName(String userName);
     User save(User user);
+    User update(User user);
     Set<String> getRoles(String userName);
     Set<String> getPermissions(String userName);
 }

@@ -15,19 +15,19 @@ import java.util.Set;
  * @date 2017/12/21
  */
 @Data
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
+public class User extends Basic implements Serializable {
 
     private static final long serialVersionUId = -1L;
 
     @Id
-    @GenericGenerator(name = "user-uuid",strategy = "uuid")
+    @Column(name = "uuid", columnDefinition = "varchar(50) COMMENT '主键'")
+    @GenericGenerator(name = "user-uuid", strategy = "uuid")
     @GeneratedValue(generator = "user-uuid")
     private String uuid;
+
 
     @Column(nullable = false)
     private String userName;
@@ -41,6 +41,8 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String age;
 
+    private Integer statusFlag;
+
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_uuid")}, inverseJoinColumns = {@JoinColumn(name = "role_uuid")})
     private Set<Role> roleSet;
@@ -49,4 +51,5 @@ public class User implements Serializable {
     public void setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
     }
+
 }

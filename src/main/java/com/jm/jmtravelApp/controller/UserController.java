@@ -1,5 +1,6 @@
 package com.jm.jmtravelApp.controller;
 
+import com.jm.jmtravelApp.common.InfoData;
 import com.jm.jmtravelApp.entity.User;
 import com.jm.jmtravelApp.service.UserService;
 import io.swagger.annotations.Api;
@@ -30,21 +31,17 @@ public class UserController {
     }
 
     @PostMapping
-    public User add(@RequestBody User user){
-        log.info(user.getUserName());
-        return user;
+    public InfoData add(@RequestBody User user) {
+        userService.save(user);
+        return InfoData.success(user, "保存成功");
     }
 
-    @PutMapping("/{uuid}")
-    public String update(@PathVariable String uuid,@RequestBody User updateUser){
-        User user = userService.findByUuid(uuid);
-        user.setUserName(updateUser.getUserName());
-        user.setPassword(updateUser.getPassword());
-        user.setAge(updateUser.getAge());
-        user.setPhone(updateUser.getPhone());
-        userService.save(user);
-        return "success";
+    @PutMapping
+    public InfoData update(@RequestBody User updateUser) {
+        userService.update(updateUser);
+        return InfoData.success(updateUser, "更新成功");
     }
+
     @GetMapping("/home")
     public String home() {
         return "你好，Spring Boot";
