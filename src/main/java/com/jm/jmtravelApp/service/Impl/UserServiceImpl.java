@@ -9,8 +9,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.Set;
 
 /**
@@ -23,16 +21,10 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private EntityManager manager;
-
-    public UserServiceImpl(EntityManager manager) {
-        this.manager = manager;
-    }
-
     @Resource
     private UserDao userDao;
 
-    //@Cacheable(value = "userInfo", key = "'findByUuid-' + #uuid")
+    @Cacheable(value = "userInfo", key = "'findByUuid-' + #uuid")
     @Override
     public User findByUuid(String uuid) {
         return userDao.findOne(uuid);
@@ -43,16 +35,15 @@ public class UserServiceImpl implements UserService {
         return userDao.findByUserName(userName);
     }
 
-    //@CacheEvict(value = "userInfo", key = "'findByUuid-' + #user.getUuid()")
+    @CacheEvict(value = "userInfo", key = "'findByUuid-' + #user.getUuid()")
     @Override
-    public User save(User user) {
-        return userDao.save(user);
+    public void save(User user) {
+        userDao.save(user);
     }
 
-    @Transactional
     @Override
-    public User update(User user) {
-        return manager.merge(user);
+    public void update(User updateUser) {
+        userDao.save(updateUser);
     }
     @Override
     public Set<String> getRoles(String userName) {

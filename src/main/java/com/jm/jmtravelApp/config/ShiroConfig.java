@@ -1,8 +1,8 @@
 package com.jm.jmtravelApp.config;
 
-import com.jm.jmtravelApp.entity.PermissionInit;
+import com.jm.jmtravelApp.entity.Permission;
 import com.jm.jmtravelApp.realm.ShiroRealm;
-import com.jm.jmtravelApp.service.PermissionInitService;
+import com.jm.jmtravelApp.service.PermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -33,7 +33,7 @@ public class ShiroConfig {
      * 3、部分过滤器可指定参数，如perms，roles
      */
     @Resource
-    private PermissionInitService permissionInitService;
+    private PermissionService permissionService;
 
     @Bean
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
@@ -68,10 +68,10 @@ public class ShiroConfig {
         //endgion
 
         //region 动态权限
-        List<PermissionInit> list = permissionInitService.findAll();
+        List<Permission> list = permissionService.findAll();
 
-        for (PermissionInit permissionInit : list) {
-            filterChainDefinitionMap.put(permissionInit.getUrl(), permissionInit.getPermissionInit());
+        for (Permission permissionInit : list) {
+            filterChainDefinitionMap.put(permissionInit.getUrlAddress(), permissionInit.getPermissionInit());
         }
         //endregion
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);

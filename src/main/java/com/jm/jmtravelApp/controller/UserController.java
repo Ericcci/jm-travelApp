@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping
-    public InfoData add(@RequestBody User user) {
+    public InfoData save(@RequestBody User user) {
         userService.save(user);
         return InfoData.success(user, "保存成功");
     }

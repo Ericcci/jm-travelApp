@@ -14,8 +14,8 @@ import java.util.Set;
 public interface UserService {
     User findByUuid(String uuid);
     User findByUserName(String userName);
-    User save(User user);
-    User update(User user);
+    void save(User user);
+    void update(User user);
     Set<String> getRoles(String userName);
     Set<String> getPermissions(String userName);
 }
