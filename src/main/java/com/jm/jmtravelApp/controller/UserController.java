@@ -42,7 +42,7 @@ public class UserController {
         return InfoData.success(updateUser, "更新成功");
     }
 
-    @GetMapping("/home")
+    @GetMapping("/add")
     public String home() {
         return "你好，Spring Boot";
     }

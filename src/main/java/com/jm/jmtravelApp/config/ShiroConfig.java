@@ -4,11 +4,12 @@ import com.jm.jmtravelApp.entity.Permission;
 import com.jm.jmtravelApp.realm.ShiroRealm;
 import com.jm.jmtravelApp.service.PermissionService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.apache.shiro.mgt.SecurityManager;
 
 import javax.annotation.Resource;
 import java.util.LinkedHashMap;
@@ -99,4 +100,17 @@ public class ShiroConfig {
         return new ShiroRealm();
     }
 
+    /**
+     * 开启shiro aop注解支持. 使用代理方式;所以需要开启代码支持; Controller才能使用@RequiresPermissions
+     *
+     * @param securityManager
+     * @return
+     */
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        log.info("authorizationAttributeSourceAdvisor()");
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
+    }
 }

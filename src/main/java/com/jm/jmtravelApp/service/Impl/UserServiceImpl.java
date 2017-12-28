@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
         return userDao.findOne(uuid);
     }
 
+    @Cacheable(value = "userInfo", key = "'findByUserName-' + #userName")
     @Override
     public User findByUserName(String userName) {
         return userDao.findByUserName(userName);
