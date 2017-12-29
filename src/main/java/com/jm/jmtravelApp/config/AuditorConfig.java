@@ -1,5 +1,8 @@
 package com.jm.jmtravelApp.config;
 
+import com.jm.jmtravelApp.entity.User;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 
@@ -10,9 +13,11 @@ import org.springframework.data.domain.AuditorAware;
  * @date 2017/12/27
  */
 @Configuration
-public class AuditorConfig implements AuditorAware<String> {
+public class AuditorConfig implements AuditorAware<User> {
     @Override
-    public String getCurrentAuditor() {
-        return "admin";
+    public User getCurrentAuditor() {
+        Subject subject = SecurityUtils.getSubject();
+        Object object = subject.getPrincipal();
+        return (User) object;
     }
 }

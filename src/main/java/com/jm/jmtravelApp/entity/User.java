@@ -1,11 +1,13 @@
 package com.jm.jmtravelApp.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,15 +43,20 @@ public class User extends Basic implements Serializable {
     @Column(nullable = false)
     private String age;
 
-    private Integer statusFlag;
+    @Column(columnDefinition = "int(10) COMMENT '用户状态'")
+    private Integer state;
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER,cascade = CascadeType.REMOVE)//立即从数据库中进行加载数据;
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_uuid")}, inverseJoinColumns = {@JoinColumn(name = "role_uuid")})
-    private Set<Role> roleSet;
+    @JsonBackReference
+    private List<Role> roleList;
 
     @JsonBackReference
-    public void setRoleSet(Set<Role> roleSet) {
-        this.roleSet = roleSet;
+    public List<Role> getRoleList(){
+        return roleList;
     }
 
+    public void setRoleList(List<Role> roleList){
+        this.roleList=roleList;
+    }
 }

@@ -1,11 +1,11 @@
 package com.jm.jmtravelApp.realm;
 
+import com.jm.jmtravelApp.entity.Permission;
+import com.jm.jmtravelApp.entity.Role;
 import com.jm.jmtravelApp.entity.User;
 import com.jm.jmtravelApp.service.UserService;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -19,6 +19,7 @@ import javax.annotation.Resource;
  * @author Eric
  * @date 2017/12/22
  */
+@Slf4j
 public class ShiroRealm extends AuthorizingRealm {
 
     @Resource
@@ -26,16 +27,25 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        String userName = (String) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        authorizationInfo.setRoles(userService.getRoles(userName));
-        authorizationInfo.setStringPermissions(userService.getPermissions(userName));
+        User user = (User) principals.getPrimaryPrincipal();
+        for (Role role : user.getRoleList()) {
+            authorizationInfo.addRole(role.getRoleName());
+            for (Permission permission : role.getPermissionList()) {
+                authorizationInfo.addStringPermission(permission.getPermissionInit());
+            }
+        }
+        log.info("用户" + user.getUserName() + "具有的角色:" + authorizationInfo.getRoles());
+        log.info("用户" + user.getUserName() + "具有的权限：" + authorizationInfo.getStringPermissions());
         return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        String userName = (String) token.getPrincipal();
+        //将token转换成UsernamePasswordToken
+        UsernamePasswordToken upToken = (UsernamePasswordToken) token;
+        //从转换后的token中获取用户名
+        String userName= upToken.getUsername();
         User user = userService.findByUserName(userName);
         if (user != null) {
             return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), getName());

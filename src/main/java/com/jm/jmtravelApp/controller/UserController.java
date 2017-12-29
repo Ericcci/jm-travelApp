@@ -3,9 +3,7 @@ package com.jm.jmtravelApp.controller;
 import com.jm.jmtravelApp.common.InfoData;
 import com.jm.jmtravelApp.entity.User;
 import com.jm.jmtravelApp.service.UserService;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -19,7 +17,6 @@ import javax.annotation.Resource;
 @Slf4j
 @RestController
 @RequestMapping("/user")
-@Api("用户")
 public class UserController {
 
     @Resource

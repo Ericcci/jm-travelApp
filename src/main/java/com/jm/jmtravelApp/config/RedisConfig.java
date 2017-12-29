@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
  */
 @Slf4j
 @Configuration
-@EnableCaching//启用缓存，这个注解很重要；
+@EnableCaching//启用缓存
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Configuration
