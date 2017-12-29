@@ -1,6 +1,8 @@
 package com.jm.jmtravelApp.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(generator=JSOGGenerator.class)
 @Entity
 @Table(name = "role")
 public class Role implements Serializable {
@@ -39,17 +42,11 @@ public class Role implements Serializable {
     @Column(columnDefinition = "varchar(100) COMMENT '角色描述'")
     private String roleDescription;
 
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "role_uuid")}, inverseJoinColumns = {@JoinColumn(name = "user_uuid")})
-    @JsonBackReference
-    private List<User> userList = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_permission", joinColumns = {@JoinColumn(name = "role_uuid")}, inverseJoinColumns = {@JoinColumn(name = "permission_uuid")})
-    @JsonBackReference
     private List<Permission> permissionList = new ArrayList<>();
 
-    @JsonBackReference
     public List<Permission> getPermissionList() {
         return permissionList;
     }
@@ -58,12 +55,4 @@ public class Role implements Serializable {
         this.permissionList = permissionList;
     }
 
-    @JsonBackReference
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
 }

@@ -1,8 +1,8 @@
 package com.jm.jmtravelApp.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import lombok.Data;
-import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2017/12/27
  */
 @Data
-@ToString
+@JsonIdentityInfo(generator=JSOGGenerator.class)
 @Entity
 @Table(name = "permission")
 public class Permission {
@@ -38,17 +38,4 @@ public class Permission {
     @Column(nullable = false, columnDefinition = "int(10) COMMENT '排序'")
     private Integer sort;
 
-    @ManyToMany
-    @JoinTable(name = "role_permission", joinColumns = {@JoinColumn(name = "permission_uuid")}, inverseJoinColumns = {@JoinColumn(name = "role_uuid")})
-    @JsonBackReference
-    private List<Role> roleList;
-
-    @JsonBackReference
-    public List<Role> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<Role> roleList) {
-        this.roleList = roleList;
-    }
 }

@@ -1,14 +1,15 @@
 package com.jm.jmtravelApp.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.voodoodyne.jackson.jsog.JSOGGenerator;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * User
@@ -18,6 +19,7 @@ import java.util.Set;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@JsonIdentityInfo(generator=JSOGGenerator.class)
 @Entity
 @Table(name = "user")
 public class User extends Basic implements Serializable {
@@ -48,10 +50,8 @@ public class User extends Basic implements Serializable {
 
     @ManyToMany(fetch=FetchType.EAGER,cascade = CascadeType.REMOVE)//立即从数据库中进行加载数据;
     @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_uuid")}, inverseJoinColumns = {@JoinColumn(name = "role_uuid")})
-    @JsonBackReference
     private List<Role> roleList;
 
-    @JsonBackReference
     public List<Role> getRoleList(){
         return roleList;
     }

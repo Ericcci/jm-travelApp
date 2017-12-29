@@ -13,11 +13,11 @@ import org.springframework.data.domain.AuditorAware;
  * @date 2017/12/27
  */
 @Configuration
-public class AuditorConfig implements AuditorAware<User> {
+public class AuditorConfig implements AuditorAware<String> {
     @Override
-    public User getCurrentAuditor() {
-        Subject subject = SecurityUtils.getSubject();
-        Object object = subject.getPrincipal();
-        return (User) object;
+    public String getCurrentAuditor() {
+        //Subject subject = SecurityUtils.getSubject();
+        //Object object = subject.getPrincipal();
+        return "admin";
     }
 }
