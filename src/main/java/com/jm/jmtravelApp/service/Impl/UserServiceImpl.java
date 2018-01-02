@@ -30,13 +30,13 @@ public class UserServiceImpl implements UserService {
         return userDao.findOne(uuid);
     }
 
-    @Cacheable(value = "userInfo", key = "'findByUserName-' + #userName")
+    //@Cacheable(value = "userInfo", key = "'findByUserName-' + #userName")
     @Override
     public User findByUserName(String userName) {
         return userDao.findByUserName(userName);
     }
 
-    @CacheEvict(value = "userInfo", key = "'findByUuid-' + #user.getUuid()")
+    //@CacheEvict(value = "userInfo", key = "'findByUuid-' + #user.getUuid()")
     @Override
     public void save(User user) {
         userDao.save(user);

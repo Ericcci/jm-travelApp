@@ -1,12 +1,12 @@
 package com.jm.jmtravelApp.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Permission
@@ -15,10 +15,11 @@ import java.util.List;
  * @date 2017/12/27
  */
 @Data
-@JsonIdentityInfo(generator=JSOGGenerator.class)
 @Entity
-@Table(name = "permission")
-public class Permission {
+@Table(name = "t_permission")
+public class Permission implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "uuid", columnDefinition = "varchar(50) COMMENT '主键'")
@@ -38,4 +39,11 @@ public class Permission {
     @Column(nullable = false, columnDefinition = "int(10) COMMENT '排序'")
     private Integer sort;
 
+//    @OneToOne(targetEntity = Resource.class, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "resource_uuid")
+//    private Resource resource;
+//
+//    @ManyToMany(targetEntity = Operation.class, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+//    @JoinTable(name = "sys_permission_operation", joinColumns = @JoinColumn(name = "permission_uuid"), inverseJoinColumns = @JoinColumn(name = "operation_uuid"))
+//    private Set<Operation> operations = new HashSet<Operation>();
 }
